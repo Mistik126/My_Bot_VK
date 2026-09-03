@@ -4,7 +4,7 @@ from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 import random
 import time
 
-TOKEN = "BOT_TOKEN"  # Твой токен
+TOKEN = os.getenv("BOT_TOKEN")  # Твой токен
 
 # Авторизация
 vk_session = vk_api.VkApi(token=TOKEN)
