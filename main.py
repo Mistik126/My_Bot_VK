@@ -3,6 +3,41 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 import random
 import time
+import sqlite3
+import os
+
+# 1. Проверяем, существует ли файл БД
+DB_PATH = 'users.db'
+
+if not os.path.exists(DB_PATH):
+    # Если файла нет — создаем!
+    connection = sqlite3.connect(DB_PATH)
+    cursor = connection.cursor()
+    
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        user_id INTEGER PRIMARY KEY,
+        name TEXT,
+        level INTEGER DEFAULT 1,
+        gold INTEGER DEFAULT 0,
+        hp INTEGER DEFAULT 100,
+        max_hp INTEGER DEFAULT 100
+    )
+    ''')
+    
+    connection.commit()
+    connection.close()
+    print('📁 База данных создана на Amvera!')
+else:
+    print('📁 База данных уже существует')
+
+
+# Проверка: вывести список таблиц из нашей базы данных
+conn = sqlite3.connect(DB_PATH)
+cursor = conn.cursor()
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+print("Таблицы в БД:", cursor.fetchall())
+conn.close()
 
 TOKEN = os.getenv("BOT_TOKEN")  # Твой токен
 
